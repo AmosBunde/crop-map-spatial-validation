@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How much does a random split overstate crop-type mapping accuracy?</title>
+<meta name="description" content="A spatial-validation study of smallholder crop-type classification from Sentinel-2 time series in Busia County, western Kenya.">
+<link rel="stylesheet" href="cropviz.css">
+<link rel="stylesheet" href="page.css">
+</head>
+<body class="viz-root">
+<header class="band">
+  <div class="wrap">
+    <p class="kicker">Spatial validation study, Busia County, Kenya</p>
+    <h1>How much does a random split overstate crop-type mapping accuracy?</h1>
+    <p class="lede">The same models, the same fields and the same satellite images, scored three ways. Only the choice of which fields to hold out changes.</p>
+  </div>
+</header>
+<main class="wrap">
+  <section>
+    <div id="tiles" class="viz-stats"></div>
+    <p class="caption">Temporal CNN on Sentinel-2 time series, 3,286 labelled fields, seven crop classes. Macro-F1 averages the F1 score over classes, so rare crops count as much as maize. Scores are low in absolute terms: this is a hard task, and the subject here is the gap between the columns.</p>
+  </section>
+
+  <section>
+    <h2>Same models, three ways of testing</h2>
+    <p>A crop map is used where nobody collected labels. A random hold-out tests something easier: fields whose neighbours the model has already seen.</p>
+    <div id="splits" class="viz"></div>
+    <p class="caption">Dots are the mean of five seeds. Bars are 95% intervals from resampling 2 km blocks, which keeps neighbouring errors together. The grey tick is a model that always answers maize.</p>
+  </section>
+
+  <section>
+    <h2>How far away must the test fields be?</h2>
+    <p>Each step removes training fields that sit within the stated distance of any test field, then retrains. I expected scores to keep falling as the gap widened. They barely move.</p>
+    <div id="buffer" class="viz"></div>
+    <p class="caption">Solid lines enforce the gap. Dotted lines are the control: the same number of training fields, chosen at random, with no gap. Where solid and dotted run together, the smaller training set explains the change and distance does not. Shaded bands are 95% block-bootstrap intervals.</p>
+  </section>
+
+  <section>
+    <h2>Where the errors are</h2>
+    <p>Every labelled field, placed with coordinates recovered for this study. Switch the test design to see which fields the model gets wrong.</p>
+    <div id="map" class="viz"></div>
+    <p class="caption">Grey squares are the 2 km blocks that contain labels. Field positions are accurate to a few metres.</p>
+  </section>
+
+  <section>
+    <h2>How far does similarity reach?</h2>
+    <p>Peak-season greenness of two fields, compared by how far apart they are. Fields within about 250 m are clearly more alike than fields in general; by 750 m most of that likeness is gone. That is why a wider gap adds so little: the leak in a random split comes from next-door fields.</p>
+    <div id="variogram" class="viz"></div>
+    <p class="caption">Empirical semivariogram of field-mean NDVI on the greenest date, from 400,000 random field pairs.</p>
+  </section>
+
+  <section>
+    <h2>What held and what did not</h2>
+    <p>The plan fixed four hypotheses before any full run.</p>
+    <ul class="findings">
+      <li><b>Random splits overstate accuracy: supported.</b> Both models score highest on random fields, lower on held-out blocks, and lowest on a held-out tile.</li>
+      <li><b>The gap grows with distance, then levels off: not supported.</b> Once training-set size is controlled, enforcing a gap of up to 1 km costs nothing measurable. The loss happens at very short range.</li>
+      <li><b>The neural model loses more than the forest: supported.</b> Its random-to-tile gap is about twice the forest's, though it remains the better model everywhere.</li>
+      <li><b>Confidence is less trustworthy off-site: mixed.</b> Calibration error rises for the neural model and falls for the forest.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>The numbers</h2>
+    <div id="table"></div>
+  </section>
+
+  <footer>
+    <p>Data: CV4A Kenya Crop Type Competition, PlantVillage and Radiant Earth Foundation (doi:10.34911/rdnt.dw605x). Charts drawn with D3. Code, plan and method are in the repository.</p>
+  </footer>
+</main>
+<script src="vendor/d3.v7.min.js"></script>
+<script src="cropviz.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

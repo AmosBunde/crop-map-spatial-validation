@@ -1,0 +1,18 @@
+*{box-sizing:border-box;margin:0}
+body{font-family:Charter,"Bitstream Charter","Iowan Old Style",Georgia,serif;font-size:1.1rem;line-height:1.6;color:var(--viz-text);background:var(--viz-surface)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 1.5rem}
+.band{background:#1F2E43;color:#fff;padding:4rem 0 3.4rem}
+.kicker{font-style:italic;color:#F79A74;font-size:1.05rem}
+h1{font-weight:500;font-size:clamp(2rem,4.6vw,3.2rem);line-height:1.1;letter-spacing:-.012em;margin-top:.6rem;max-width:22em;text-wrap:balance}
+.lede{font-size:1.25rem;line-height:1.5;color:rgba(255,255,255,.86);margin-top:1.2rem;max-width:38em}
+main section{margin-top:4rem}
+main section:first-child{margin-top:2.4rem}
+h2{font-weight:500;font-size:1.9rem;line-height:1.2;color:var(--viz-text)}
+section > p{margin-top:.6rem;max-width:44em;color:var(--viz-text-2)}
+.viz,#table{margin-top:1.6rem}
+.caption{font-size:.92rem;color:var(--viz-muted);margin-top:.9rem;max-width:52em}
+#map{max-width:720px}
+footer{margin:4.5rem 0 3rem;padding-top:1.4rem;border-top:1px solid var(--viz-rule);font-size:.92rem;color:var(--viz-muted)}
+.findings{margin:1rem 0 0 1.2rem;max-width:46em;color:var(--viz-text-2)}
+.findings li{margin-top:.6rem}
+.findings b{color:var(--viz-text);font-weight:600}
