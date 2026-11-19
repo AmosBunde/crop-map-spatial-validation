@@ -1,0 +1,20 @@
+# PostGIS for the field vector layer and the spatial queries behind the splits.
+#   docker compose up -d      then      uv run cropval postgis load
+services:
+  postgis:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: cropval
+      POSTGRES_PASSWORD: cropval
+      POSTGRES_DB: cropval
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cropval -d cropval"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+volumes:
+  pgdata:
