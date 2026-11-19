@@ -1,4 +1,4 @@
-"""Run the pre-registered experiment matrix and summarise it.
+"""Run the planned experiment matrix and summarise it.
 
 Every run stores its out-of-fold prediction for every field. All reported
 numbers, intervals and paired differences are then computed from those stored

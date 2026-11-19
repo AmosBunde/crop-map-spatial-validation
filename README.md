@@ -1,7 +1,7 @@
 # How much does a random split overstate crop-type mapping accuracy?
 
-A pre-registered spatial-validation study of smallholder crop-type classification from
-Sentinel-2 time series in Busia County, western Kenya.
+A spatial-validation study of smallholder crop-type classification from Sentinel-2 time
+series in Busia County, western Kenya, run against a plan written before the full experiment.
 
 ![Macro-F1 falls from 0.29 on random fields to 0.25 on held-out blocks and 0.21 on a held-out tile](docs/img/headline.png)
 
@@ -46,9 +46,11 @@ fields are held out:
 | `block` | whole 2 km squares | accuracy a few kilometres from any label |
 | `tile` | one of the four image tiles | accuracy in a district with no local labels |
 
-The hypotheses, splits, metrics and uncertainty method were fixed in
-[VALIDATION_PLAN.md](VALIDATION_PLAN.md) before the first full run. Changes made after
-an independent code review are logged at the bottom of that file.
+The hypotheses, splits, metrics and uncertainty method were written down in
+[VALIDATION_PLAN.md](VALIDATION_PLAN.md) before the first full run, and every change
+made afterwards is logged at the bottom of that file. The plan was not lodged with an
+outside registry, and it is committed alongside the results, so its priority rests on
+that log and on my word.
 
 ## Results
 
@@ -278,6 +280,9 @@ results/       run outputs (git-ignored)
 
 ## Limits
 
+- **The plan is self-attested.** It was written before the full run but not registered
+  anywhere, and nine amendments followed a code review. The plan named random minus block
+  as its headline comparison; the larger random-minus-tile gap is reported beside it.
 - **One region, one season.** Busia County, June to November 2019. Nothing here says how
   large the gap is elsewhere.
 - **A weak classifier.** Neither model is tuned, and both are far from useful accuracy on

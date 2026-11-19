@@ -154,7 +154,7 @@ def main(argv=None):
     e.add_argument("--out", required=True)
     e.set_defaults(fn=cmd_experiment)
 
-    su = sub.add_parser("suite", help="run the whole pre-registered matrix (resumable) and summarise")
+    su = sub.add_parser("suite", help="run the whole planned matrix (resumable) and summarise")
     su.add_argument("--fields", default="results/fields.gpkg")
     su.add_argument("--features", default="results/features.parquet")
     su.add_argument("--out", default="results/suite")
