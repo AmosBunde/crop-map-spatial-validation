@@ -17,6 +17,7 @@ from . import BANDS, CLASSES
 from .evaluate import expected_calibration_error
 from .features import add_indices, to_cube
 from .models import MODELS
+from .phenology import phenology_parameters
 from .splits import block_ids, folds
 
 COLUMNS = BANDS + ["NDVI", "NDRE", "NDWI", "cloud_frac"]
@@ -35,6 +36,11 @@ def load(fields_path: Path, features_path: Path):
     keys, dates, cube = to_cube(add_indices(pd.read_parquet(features_path)), COLUMNS)
     fields = keys.reset_index().merge(fields, on=["tile", "field_id"]).sort_values(["tile", "field_id"]).reset_index(drop=True)
     return fields, cube[fields["index"].to_numpy()], dates
+
+
+def days_since_first(dates: list[str]) -> np.ndarray:
+    d = pd.to_datetime(pd.Series(dates), format="%Y%m%d")
+    return (d - d.iloc[0]).dt.days.to_numpy(dtype=float)
 
 
 def impute(x_train: np.ndarray, x_test: np.ndarray):
@@ -84,6 +90,8 @@ def matrix():
                 out.append(("buffer_control", "block", model, seed, 2000.0, float(buffer_m)))
         for block_m in (1000.0, 5000.0):
             out.append(("block_size", "block", "rf", seed, block_m, 0.0))
+        for split in ("random", "block"):                      # follow-up study, see FOLLOW_UP_PLAN.md
+            out.append(("phenology", split, "pheno", seed, 2000.0, 0.0))
     return out
 
 
@@ -96,12 +104,16 @@ def run_suite(fields_path: Path, features_path: Path, out_dir: Path, only: str |
     todo = [m for m in matrix() if m not in done and (only is None or m[0] == only)]
     if not todo:
         return
-    fields, x, _ = load(fields_path, features_path)
+    fields, x, dates = load(fields_path, features_path)
     y = fields.label.to_numpy() - 1
+    x_pheno = None
     for i, (group, split, model, seed, block_m, buffer_m) in enumerate(todo):
         t0 = time.time()
         control = group == "buffer_control"
-        proba, n_train = run(fields, x, split, model, seed, block_m, 0.0 if control else buffer_m,
+        if model == "pheno" and x_pheno is None:
+            x_pheno = phenology_parameters(x, days_since_first(dates), COLUMNS)
+        proba, n_train = run(fields, x_pheno if model == "pheno" else x, split, model, seed, block_m,
+                             0.0 if control else buffer_m,
                              match_buffer_m=buffer_m if control else 0.0)
         pred = proba.argmax(axis=1)
         key = dict(group=group, split=split, model=model, seed=seed, block_m=block_m, buffer_m=buffer_m)
