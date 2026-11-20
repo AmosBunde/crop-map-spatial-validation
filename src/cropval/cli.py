@@ -158,7 +158,7 @@ def main(argv=None):
     su.add_argument("--fields", default="results/fields.gpkg")
     su.add_argument("--features", default="results/features.parquet")
     su.add_argument("--out", default="results/suite")
-    su.add_argument("--only", choices=["main", "buffer", "buffer_control", "block_size"])
+    su.add_argument("--only", choices=["main", "buffer", "buffer_control", "block_size", "phenology"])
     su.set_defaults(fn=cmd_suite)
 
     ex = sub.add_parser("export", help="write the JSON the D3 page reads")

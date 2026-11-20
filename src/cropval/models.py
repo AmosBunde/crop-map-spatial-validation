@@ -3,6 +3,8 @@
 rf    Random forest on the flattened series: the strong, cheap baseline.
 tcn   A small temporal convolutional network in PyTorch that reads the
       series as (features x dates). Small enough to train on a laptop CPU.
+pheno The same random forest, given 18 growth-curve parameters per field
+      (see phenology.py) instead of the raw series.
 """
 from __future__ import annotations
 
@@ -65,4 +67,5 @@ def fit_predict_tcn(x_train, y_train, x_test, n_classes: int, seed: int = 0, epo
         return torch.softmax(model(xs), dim=1).numpy()
 
 
-MODELS = {"rf": fit_predict_rf, "tcn": fit_predict_tcn}
+# "pheno" is the same forest as "rf"; the suite hands it growth-curve parameters instead of the raw series.
+MODELS = {"rf": fit_predict_rf, "tcn": fit_predict_tcn, "pheno": fit_predict_rf}
