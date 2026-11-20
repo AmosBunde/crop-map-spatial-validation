@@ -3,6 +3,8 @@
 A spatial-validation study of smallholder crop-type classification from Sentinel-2 time
 series in Busia County, western Kenya, run against a plan written before the full experiment.
 
+**Interactive write-up:** [iam-amos.io/work/crop-map-spatial-validation](https://iam-amos.io/work/crop-map-spatial-validation/)
+
 ![Macro-F1 falls from 0.29 on random fields to 0.25 on held-out blocks and 0.21 on a held-out tile](docs/img/headline.png)
 
 **The short answer.** On 3,286 labelled fields, the better of two models scores a macro-F1
