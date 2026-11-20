@@ -280,6 +280,19 @@ docs/          D3 page, chart code, exported data, figures
 results/       run outputs (git-ignored)
 ```
 
+## Follow-up: a phenology-structured model
+
+A later question, planned separately in [FOLLOW_UP_PLAN.md](FOLLOW_UP_PLAN.md): does a
+classifier that sees each field only through the parameters of a growth curve lose less
+accuracy with distance from the training fields than one that sees the raw series?
+
+It does. The same random forest, given 18 growth-curve parameters instead of the raw
+series, kept macro-F1 near 0.16 at every distance, while the forest on the raw series
+fell from 0.22 beside a training field to 0.16 beyond 800 m. All four rules set in
+advance were met. The structured model is not the better classifier: it is worse close
+to the training data and the network beats both everywhere. The plan file has the table
+and the limits. Run it with `uv run cropval suite --only phenology`.
+
 ## Limits
 
 - **The plan is self-attested.** It was written before the full run but not registered
