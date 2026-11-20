@@ -73,6 +73,38 @@ only part of the growing calendar, smallholder fields are intercropped, and a be
 may throw away the signal the forest uses. I am running it because the claim is on my
 profile as a prediction that can fail, and this is the cheapest place to let it.
 
+## Outcome
+
+Run on 20 November 2026. Ten runs, about a minute each. The analysis code and the
+per-field extract are in
+[AmosBunde/analysis/held-out-distance](https://github.com/AmosBunde/AmosBunde/tree/main/analysis/held-out-distance).
+
+Macro-F1 by distance to the nearest training field, `random` and `block` designs, five seeds:
+
+| Model | under 50 m | 50 to 100 | 100 to 200 | 200 to 400 | 400 to 800 | over 800 m | R (95% interval) |
+|---|---|---|---|---|---|---|---|
+| `tcn` | 0.316 | 0.295 | 0.265 | 0.265 | 0.246 | 0.238 | 1.12 (1.07 to 1.16) |
+| `rf` | 0.218 | 0.189 | 0.180 | 0.167 | 0.165 | 0.157 | 1.08 (1.03 to 1.13) |
+| `pheno` | 0.171 | 0.158 | 0.160 | 0.154 | 0.168 | 0.156 | 1.02 (0.99 to 1.05) |
+
+| Rule | Result | Outcome |
+|---|---|---|
+| G | `pheno` near-group macro-F1 0.171 against a bar of 0.153 | passed |
+| P1 | `R(pheno) - R(rf)` = -0.059 (-0.101 to -0.018) | supported |
+| P2 | `R(pheno) - R(tcn)` = -0.097 (-0.142 to -0.048) | supported |
+| P3 | far-group macro-F1, `pheno` minus `rf` = -0.001 (-0.017 to 0.016) | supported |
+
+I expected P1 to fail and it held.
+
+The structured model is not the better classifier. It is worse than `rf` near the
+training fields and worse than `tcn` everywhere. What the result shows is that everything
+`rf` gains over `pheno` from the raw series is gained within a few hundred metres of a
+training field; beyond 400 m the two score the same. The flat curve comes from leaving
+out signal that does not travel, not from adding signal that does.
+
+Limits: one structured model, one region, one season, 13 dates. The guard passed by a
+small margin. The plan was written and run on the same day by the same person.
+
 ## Changes after results
 
-None yet.
+None. The model, the grid, the runs, the distance groups and the rules are as written above.
